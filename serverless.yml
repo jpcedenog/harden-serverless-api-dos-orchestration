@@ -1,0 +1,41 @@
+service: aws-lambda-lab
+
+frameworkVersion: ">=1.28.0 <2.0.0"
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+
+provider:
+  name: aws
+  runtime: go1.x
+  memorySize: 128
+  versionFunctions: false
+  stage: dev
+  region: us-east-1
+  tracing:
+    apiGateway: true
+    lambda: true
+  environment:
+    password: AQICAHikasXx5gVVjFkLuIk8ntupVE91r7phkif0pj2QEb4PiAGUGSucojI8Dtn128du75TgAAAAZzBlBgkqhkiG9w0BBwagWDBWAgEAMFEGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMH9offh0Sx7blID9fAgEQgCTjuxCqPZQAGAUPzyhS2qucVsExmZ3kiWbDc7Irwr_tw1pOXDk=
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+
+functions:
+  guessSecret:
+    handler: bin/guesssecret
+    events:
+      - http:
+          path: guesssecret
+          method: post
+          cors: true
+          authorizer: aws_iam
+    awsKmsKeyArn: arn:aws:kms:us-east-1:860561101795:key/e0c5abf1-b91e-4574-ba71-fb51b5cc8986
+
+resources:
+  - ${file(resources/api-gateway-errors.yml)}
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
