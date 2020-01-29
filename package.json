@@ -1,0 +1,9 @@
+{
+  "name": "aws-lambda-lab",
+  "description": "",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "serverless-step-functions": "^2.17.0"
+  }
+}

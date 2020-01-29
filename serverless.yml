@@ -25,11 +25,11 @@ package:
    - ./bin/**
 
 functions:
-  guessSecret:
-    handler: bin/guesssecret
+  upload:
+    handler: bin/upload
     events:
       - http:
-          path: guesssecret
+          path: upload
           method: post
           cors: true
           authorizer: aws_iam
@@ -39,3 +39,6 @@ resources:
   - ${file(resources/api-gateway-errors.yml)}
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
+
+plugins:
+  - serverless-step-functions
