@@ -1,9 +1,9 @@
 Resources:
-  createNoteRole:
+  uploadFileRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: /awesome/app/createnote/
-      RoleName: CreateNoteRole
+      Path: /awesome/app/uploadfile/
+      RoleName: ProcessFileRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -13,7 +13,7 @@ Resources:
                 - lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: createNotePolicy
+        - PolicyName: processFilePolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -35,12 +35,11 @@ Resources:
                   - "Fn::GetAtt": [ NotesTable, Arn ]
                 Action:
                   - dynamodb:PutItem
-
-  scanNotesRole:
+  processFileRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: /awesome/app/scannotes/
-      RoleName: ScanNotesRole
+      Path: /awesome/app/processfile/
+      RoleName: ProcessFileRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -50,7 +49,7 @@ Resources:
                 - lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: scanNotesPolicy
+        - PolicyName: processFilePolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -71,6 +70,4 @@ Resources:
                 Resource:
                   - "Fn::GetAtt": [ NotesTable, Arn ]
                 Action:
-                  - dynamodb:Query
-                  - dynamodb:Scan
-                  - dynamodb:GetItem
+                  - dynamodb:PutItem
