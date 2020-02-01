@@ -3,7 +3,7 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       Path: /awesome/app/uploadfile/
-      RoleName: ProcessFileRole
+      RoleName: UploadFileRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -13,7 +13,7 @@ Resources:
                 - lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: processFilePolicy
+        - PolicyName: uploadFilePolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -32,14 +32,14 @@ Resources:
                         - 'log-group:/aws/lambda/*:*:*'
               - Effect: "Allow"
                 Resource:
-                  - "Fn::GetAtt": [ NotesTable, Arn ]
+                  - "Fn::GetAtt": [ NotesBucket, Arn ]
                 Action:
-                  - dynamodb:PutItem
-  processFileRole:
+                  - s3:PutObject
+  saveNoteRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: /awesome/app/processfile/
-      RoleName: ProcessFileRole
+      Path: /awesome/app/savenote/
+      RoleName: SaveNoteRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -49,7 +49,7 @@ Resources:
                 - lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: processFilePolicy
+        - PolicyName: saveNotePolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -66,6 +66,11 @@ Resources:
                         - Ref: 'AWS::Region'
                         - Ref: 'AWS::AccountId'
                         - 'log-group:/aws/lambda/*:*:*'
+              - Effect: "Allow"
+                Resource:
+                  - "Fn::GetAtt": [ NotesBucket, Arn ]
+                Action:
+                  - s3:GetObject
               - Effect: "Allow"
                 Resource:
                   - "Fn::GetAtt": [ NotesTable, Arn ]

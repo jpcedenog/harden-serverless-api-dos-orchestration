@@ -24,6 +24,7 @@ provider:
     lambda: true
   environment:
     tableName: ${self:custom.tableName}
+    bucketName: [ NotesBucket, Arn ]
 
 package:
  exclude:
@@ -33,19 +34,21 @@ package:
 
 functions:
   upload:
-    role: processFileRole
+    role: uploadFileRole
     handler: bin/upload
     events:
       - http:
-          path: upload
-          method: post
-          cors: true
-          authorizer: aws_iam
-
-stepFunctions:
-  stateMachines:
-    fileProcessor:
-
+        path: upload
+        method: post
+        cors: true
+        authorizer: aws_iam
+  savenote:
+    role: saveNoteRole
+    handler: bin/savenote
+    events:
+      - s3:
+          bucket: [ NotesBucket, Arn ]
+          event: s3:ObjectCreated:*
 
 resources:
   - ${file(resources/api-gateway-errors.yml)}
@@ -53,6 +56,3 @@ resources:
   - ${file(resources/cognito-identity-pool.yml)}
   - ${file(resources/dynamodb-table.yml)}
   - ${file(resources/s3-bucket.yml)}
-
-plugins:
-  - serverless-step-functions

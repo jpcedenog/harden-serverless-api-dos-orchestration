@@ -3,48 +3,35 @@ package main
 import (
 	"bytes"
 	"context"
-	b64 "encoding/base64"
 	"encoding/json"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/kms"
-	"os"
+	"net/http"
+	"time"
 )
 
 type Response events.APIGatewayProxyResponse
 
 type Event struct {
-	ControlValue string `json:"control_value"`
+	FileUrL string `json:"file_url"`
 }
 
-func GuessSecret(ctx context.Context, request events.APIGatewayProxyRequest) (Response, error) {
+func UploadFile(ctx context.Context, request events.APIGatewayProxyRequest) (Response, error) {
 	apiEvent := Event{}
 	if err := json.Unmarshal([]byte(request.Body), &apiEvent); err != nil {
 		return Response{StatusCode: 400}, err
 	}
 
-	kmsSvc := kms.New(session.Must(session.NewSession()))
-	//Get encrypted password from environment
-	encryptedPassword, err := b64.URLEncoding.DecodeString(os.Getenv("password"))
+	var myClient = &http.Client{Timeout: 5 * time.Second}
+	file, err := myClient.Get(apiEvent.FileUrL)
 	if err != nil {
 		return Response{StatusCode: 400}, err
 	}
-	input := &kms.DecryptInput{
-		CiphertextBlob: encryptedPassword,
-	}
 
-	//Decode encrypted password
-	result, err := kmsSvc.Decrypt(input)
-	if err != nil {
-		return Response{StatusCode: 500}, err
-	}
-
-	//Do something with plain text password value
-	isSecretValueCorrect := apiEvent.ControlValue == string(result.Plaintext)
+	defer file.Body.Close()
 
 	body, err := json.Marshal(map[string]interface{}{
-		"is_secret_correct": isSecretValueCorrect,
+		"is_secret_correct": false,
 	})
 	if err != nil {
 		return Response{StatusCode: 500}, err
@@ -58,7 +45,7 @@ func GuessSecret(ctx context.Context, request events.APIGatewayProxyRequest) (Re
 		IsBase64Encoded: false,
 		Body:            buf.String(),
 		Headers: map[string]string{
-			"Content-Type":           "application/json",
+			"Content-Type": "application/json",
 		},
 	}
 
@@ -66,5 +53,5 @@ func GuessSecret(ctx context.Context, request events.APIGatewayProxyRequest) (Re
 }
 
 func main() {
-	lambda.Start(GuessSecret)
+	lambda.Start(UploadFile)
 }
