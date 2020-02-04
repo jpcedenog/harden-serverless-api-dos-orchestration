@@ -1,23 +1,8 @@
 Resources:
   NotesBucket:
     Type: AWS::S3::Bucket
-    Properties:
-      CorsConfiguration:
-        CorsRules:
-          -
-            AllowedOrigins:
-              - '*'
-            AllowedHeaders:
-              - '*'
-            AllowedMethods:
-              - GET
-              - PUT
-              - POST
-              - DELETE
-              - HEAD
-            MaxAge: 3000
 
 Outputs:
-  AttachmentsBucketName:
+  BucketName:
     Value:
       Ref: NotesBucket

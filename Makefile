@@ -2,10 +2,14 @@
 
 build:
 	dep ensure -v
-	env GOOS=linux go build -ldflags="-s -w" -o bin/guesssecret guesssecret/main.go
+	env GOOS=linux go build -ldflags="-s -w" -o bin/upload upload/main.go
+	env GOOS=linux go build -ldflags="-s -w" -o bin/savenote savenote/main.go
 
 clean:
 	rm -rf ./bin ./vendor Gopkg.lock
+
+validate: clean build
+	sls deploy --noDeploy --stage dev
 
 deploy: clean build
 	sls deploy --verbose

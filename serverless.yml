@@ -6,6 +6,9 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   # Set the table name here so we can use it while testing locally
   tableName: ${self:custom.stage}-notes
+  bucketName:
+    Value:
+      Ref: NotesBucket
   # Set our DynamoDB throughput for prod and all other non-prod stages.
   tableThroughputs:
     prod: 5
@@ -24,7 +27,7 @@ provider:
     lambda: true
   environment:
     tableName: ${self:custom.tableName}
-    bucketName: [ NotesBucket, Arn ]
+    bucketName: ${self:custom.bucketName}
 
 package:
  exclude:
