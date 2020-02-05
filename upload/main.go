@@ -73,10 +73,11 @@ func UploadFile(ctx context.Context, request events.APIGatewayProxyRequest) (Res
 		return Response{StatusCode: 400}, errors.New("file name is missing")
 	}
 
-	cognitoIdentityID := request.RequestContext.Identity.CognitoIdentityID
+	//cognitoIdentityID := request.RequestContext.Identity.CognitoIdentityID
 
 	putObjectInput := &s3.PutObjectInput{
-		Key:    aws.String(strings.Join([]string{cognitoIdentityID, fileName}, "/")),
+		//Key:    aws.String(strings.Join([]string{cognitoIdentityID, fileName}, "/")),
+		Key:    aws.String(fileName),
 		Body:   bytes.NewReader(fileBuffer),
 		Bucket: aws.String(os.Getenv("bucketName")),
 	}

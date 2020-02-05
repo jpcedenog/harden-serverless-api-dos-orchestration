@@ -30,11 +30,6 @@ Resources:
                         - Ref: 'AWS::Region'
                         - Ref: 'AWS::AccountId'
                         - 'log-group:/aws/lambda/*:*:*'
-              - Effect: "Allow"
-                Resource:
-                  - "Fn::GetAtt": [ NotesBucket, Arn ]
-                Action:
-                  - s3:PutObject
   saveNoteRole:
     Type: AWS::IAM::Role
     Properties:

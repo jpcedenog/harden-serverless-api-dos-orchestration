@@ -35,7 +35,7 @@ package:
 
 functions:
   upload:
-    role: uploadFileRole
+#    role: uploadFileRole
     handler: bin/upload
     events:
       - http:
@@ -55,6 +55,7 @@ functions:
 
 resources:
   - ${file(resources/api-gateway-errors.yml)}
+  - ${file(resources/iam-roles.yml)}
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
   - ${file(resources/dynamodb-table.yml)}

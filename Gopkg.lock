@@ -16,7 +16,7 @@
   version = "v1.13.3"
 
 [[projects]]
-  digest = "1:da88b196550be34630a6f094b1776e3dd22a13ce3745a959639f11a39ac3b327"
+  digest = "1:912cf1a1b0b39edb4c957009b1b84757df55380ecaa5a7ff1704f04f76bef051"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -61,16 +61,8 @@
     "service/sts/stsiface",
   ]
   pruneopts = "UT"
-  revision = "086fb47047be5398c20d3d9e1a0bf4982b90e1cc"
-  version = "v1.28.10"
-
-[[projects]]
-  digest = "1:144921c08f29f07256e59988066fc43792710f716500832f867725e39373f90f"
-  name = "github.com/fnproject/fdk-go"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "e0af12e7b04464874b1b44b7b765d0054ded019f"
-  version = "v0.0.1"
+  revision = "2590bc875c54c9fda225d8e4e56a9d28d90c6a47"
+  version = "v1.28.11"
 
 [[projects]]
   digest = "1:bb81097a5b62634f3e9fec1014657855610c82d19b9a40c17612e32651e35dca"
@@ -78,18 +70,6 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "c2b33e84"
-
-[[projects]]
-  branch = "master"
-  digest = "1:d414058838cbe9c12bf62ce696624ed7ef36a9b82e388d6d5ed4a20326219a78"
-  name = "github.com/tencentyun/scf-go-lib"
-  packages = [
-    "cloudfunction",
-    "cloudfunction/messages",
-    "functioncontext",
-  ]
-  pruneopts = "UT"
-  revision = "9a6ea1bf75b89a0cd917a1e846bacf40fc06ca56"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -100,8 +80,6 @@
     "github.com/aws/aws-sdk-go/aws",
     "github.com/aws/aws-sdk-go/aws/session",
     "github.com/aws/aws-sdk-go/service/s3",
-    "github.com/fnproject/fdk-go",
-    "github.com/tencentyun/scf-go-lib/cloudfunction",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

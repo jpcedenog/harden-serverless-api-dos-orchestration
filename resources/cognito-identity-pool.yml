@@ -70,7 +70,33 @@ Resources:
                       - ':'
                       - Ref: ApiGatewayRestApi
                       - '/*'
-              
+              - Effect: 'Allow'
+                Action:
+                  - s3:*
+                Resource:
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                        - '/*'
+                  - Fn::Join:
+                    - ''
+                    -
+                      - Fn::GetAtt: [ NotesBucket, Arn ]
+                      - '/'
+                      - '$'
+                      - '{cognito-identity.amazonaws.com:sub}'
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                        - '/'
+                        - '$'
+                        - '{cognito-identity.amazonaws.com:sub}/*'
 # Print out the Id of the Identity Pool that is created
 Outputs:
   IdentityPoolId:
