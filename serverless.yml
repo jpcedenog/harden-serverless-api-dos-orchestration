@@ -6,9 +6,7 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   # Set the table name here so we can use it while testing locally
   tableName: ${self:custom.stage}-notes
-  bucketName:
-    Value:
-      Ref: NotesBucket
+  bucketName: ${self:custom.stage}-jpcedenog-sample-bucket
   # Set our DynamoDB throughput for prod and all other non-prod stages.
   tableThroughputs:
     prod: 5
@@ -22,9 +20,9 @@ provider:
   versionFunctions: false
   stage: dev
   region: us-east-1
-  tracing:
-    apiGateway: true
-    lambda: true
+#  tracing:
+#    apiGateway: true
+#    lambda: true
   environment:
     tableName: ${self:custom.tableName}
     bucketName: ${self:custom.bucketName}
@@ -41,17 +39,19 @@ functions:
     handler: bin/upload
     events:
       - http:
-        path: upload
-        method: post
-        cors: true
-        authorizer: aws_iam
-  savenote:
-    role: saveNoteRole
-    handler: bin/savenote
-    events:
-      - s3:
-          bucket: [ NotesBucket, Arn ]
-          event: s3:ObjectCreated:*
+          path: upload
+          method: post
+          cors: true
+          authorizer: aws_iam
+#  savenote:
+#    role: saveNoteRole
+#    handler: bin/savenote
+#    events:
+#      - s3:
+#          bucket:
+#            Value:
+#              Ref: NotesBucket
+#          event: s3:ObjectCreated:*
 
 resources:
   - ${file(resources/api-gateway-errors.yml)}

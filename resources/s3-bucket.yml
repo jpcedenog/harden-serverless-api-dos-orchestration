@@ -1,6 +1,8 @@
 Resources:
   NotesBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:custom.bucketName}
 
 Outputs:
   BucketName:

@@ -10,7 +10,7 @@ import (
 type Response events.APIGatewayProxyResponse
 
 func SaveNote(ctx context.Context, request events.APIGatewayProxyRequest) (Response, error) {
-	fmt.Println("Request", request)
+	fmt.Println("SaveNote Request:", request)
 
 	resp := Response{
 		StatusCode:      200,
