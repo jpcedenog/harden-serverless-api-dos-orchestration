@@ -55,8 +55,8 @@ functions:
 
 resources:
   - ${file(resources/api-gateway-errors.yml)}
-  - ${file(resources/iam-roles.yml)}
-  - ${file(resources/cognito-user-pool.yml)}
-  - ${file(resources/cognito-identity-pool.yml)}
+#  - ${file(resources/iam-roles.yml)}
   - ${file(resources/dynamodb-table.yml)}
   - ${file(resources/s3-bucket.yml)}
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
