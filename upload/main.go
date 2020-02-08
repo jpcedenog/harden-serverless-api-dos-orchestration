@@ -7,11 +7,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -31,6 +30,8 @@ type Event struct {
 }
 
 func UploadFile(ctx context.Context, request events.APIGatewayProxyRequest) (Response, error) {
+	fmt.Println("Uploading file...")
+
 	myClient := httpClient()
 
 	apiEvent := Event{}
@@ -72,26 +73,19 @@ func UploadFile(ctx context.Context, request events.APIGatewayProxyRequest) (Res
 		return Response{StatusCode: 400}, errors.New("file name is missing")
 	}
 
-	//cognitoIdentityID := request.RequestContext.Identity.CognitoIdentityID
+	cognitoIdentityID := request.RequestContext.Identity.CognitoIdentityID
+	os.Setenv("cognitoIdentityID", cognitoIdentityID)
 
-	putObjectInput := &s3.PutObjectInput{
-		//Key:    aws.String(strings.Join([]string{cognitoIdentityID, fileName}, "/")),
-		Key:    aws.String(fileName),
-		Body:   bytes.NewReader(fileBuffer),
-		Bucket: aws.String(os.Getenv("bucketName")),
-	}
-
-	fmt.Println("Put Object Input:", putObjectInput)
-
-	//s3Client := s3.New(session.Must(session.NewSession()))
-	uploader := s3manager.NewUploader(session.Must(session.NewSession()))
-
-	//_, err = s3Client.PutObject(putObjectInput)
-	result, err := uploader.Upload(&s3manager.UploadInput{
+	uploadInput := &s3manager.UploadInput{
 		Body:                      bytes.NewReader(fileBuffer),
 		Bucket:                    aws.String(os.Getenv("bucketName")),
-		Key:                       aws.String(fileName),
-	})
+		Key:    aws.String(strings.Join([]string{cognitoIdentityID, fileName}, "/")),
+	}
+
+	fmt.Println("Upload Input:", uploadInput)
+
+	uploader := s3manager.NewUploader(session.Must(session.NewSession()))
+	result, err := uploader.Upload(uploadInput)
 	if err != nil {
 		return Response{StatusCode: 400}, err
 	}

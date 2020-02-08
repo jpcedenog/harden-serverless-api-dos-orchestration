@@ -30,6 +30,34 @@ Resources:
                         - Ref: 'AWS::Region'
                         - Ref: 'AWS::AccountId'
                         - 'log-group:/aws/lambda/*:*:*'
+              - Effect: 'Allow'
+                Action:
+                  - s3:PutObject
+                  - s3:PutObjectAcl
+                Resource:
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                        - '/*'
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                        - '/'
+                        - '$'
+                        - '{cognito-identity.amazonaws.com:sub}'
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                        - '/'
+                        - '$'
+                        - '{cognito-identity.amazonaws.com:sub}/*'
   saveNoteRole:
     Type: AWS::IAM::Role
     Properties:
@@ -63,11 +91,34 @@ Resources:
                         - 'log-group:/aws/lambda/*:*:*'
               - Effect: "Allow"
                 Resource:
-                  - "Fn::GetAtt": [ NotesBucket, Arn ]
-                Action:
-                  - s3:GetObject
-              - Effect: "Allow"
-                Resource:
                   - "Fn::GetAtt": [ NotesTable, Arn ]
                 Action:
                   - dynamodb:PutItem
+              - Effect: 'Allow'
+                Action:
+                  - s3:GetObject
+                  - s3:GetObjectAcl
+                Resource:
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                        - '/*'
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                        - '/'
+                        - '$'
+                        - '{cognito-identity.amazonaws.com:sub}'
+                  - Fn::Join:
+                      - ''
+                      -
+                        - Fn::GetAtt: [ NotesBucket, Arn ]
+                        - '/'
+                        - '$'
+                        - '{cognito-identity.amazonaws.com:sub}/*'

@@ -6,11 +6,11 @@ Resources:
       AttributeDefinitions:
         - AttributeName: userId
           AttributeType: S
-        - AttributeName: fileName
+        - AttributeName: objectKey
           AttributeType: S
       KeySchema:
         - AttributeName: userId
           KeyType: HASH
-        - AttributeName: fileName
+        - AttributeName: objectKey
           KeyType: RANGE
       BillingMode: PAY_PER_REQUEST

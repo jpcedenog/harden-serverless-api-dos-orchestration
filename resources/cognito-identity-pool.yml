@@ -72,7 +72,10 @@ Resources:
                       - '/*'
               - Effect: 'Allow'
                 Action:
-                  - s3:*
+                  - s3:PutObject
+                  - s3:PutObjectAcl
+                  - s3:GetObject
+                  - s3:GetObjectAcl
                 Resource:
                   - Fn::Join:
                       - ''
@@ -97,6 +100,11 @@ Resources:
                         - '/'
                         - '$'
                         - '{cognito-identity.amazonaws.com:sub}/*'
+              - Effect: "Allow"
+                Resource:
+                  - "Fn::GetAtt": [ NotesTable, Arn ]
+                Action:
+                  - dynamodb:PutItem
 # Print out the Id of the Identity Pool that is created
 Outputs:
   IdentityPoolId:
