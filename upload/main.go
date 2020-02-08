@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -66,8 +67,6 @@ func UploadFile(ctx context.Context, request events.APIGatewayProxyRequest) (Res
 		return Response{StatusCode: 400}, err
 	}
 
-	s3Client := s3.New(session.Must(session.NewSession()))
-
 	fileName := strings.TrimSpace(path.Base(file.Request.URL.Path))
 	if len(fileName) == 0 {
 		return Response{StatusCode: 400}, errors.New("file name is missing")
@@ -84,13 +83,21 @@ func UploadFile(ctx context.Context, request events.APIGatewayProxyRequest) (Res
 
 	fmt.Println("Put Object Input:", putObjectInput)
 
-	_, err = s3Client.PutObject(putObjectInput)
+	//s3Client := s3.New(session.Must(session.NewSession()))
+	uploader := s3manager.NewUploader(session.Must(session.NewSession()))
+
+	//_, err = s3Client.PutObject(putObjectInput)
+	result, err := uploader.Upload(&s3manager.UploadInput{
+		Body:                      bytes.NewReader(fileBuffer),
+		Bucket:                    aws.String(os.Getenv("bucketName")),
+		Key:                       aws.String(fileName),
+	})
 	if err != nil {
 		return Response{StatusCode: 400}, err
 	}
 
 	body, err := json.Marshal(map[string]interface{}{
-		"status": "File upload OK",
+		"status": result.Location,
 	})
 	if err != nil {
 		return Response{StatusCode: 500}, err
