@@ -77,8 +77,8 @@ func UploadFile(ctx context.Context, request events.APIGatewayProxyRequest) (Res
 	os.Setenv("cognitoIdentityID", cognitoIdentityID)
 
 	uploadInput := &s3manager.UploadInput{
-		Body:                      bytes.NewReader(fileBuffer),
-		Bucket:                    aws.String(os.Getenv("bucketName")),
+		Body:   bytes.NewReader(fileBuffer),
+		Bucket: aws.String(os.Getenv("bucketName")),
 		Key:    aws.String(strings.Join([]string{cognitoIdentityID, fileName}, "/")),
 	}
 
