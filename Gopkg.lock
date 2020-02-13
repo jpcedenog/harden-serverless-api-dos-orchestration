@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:c8bc6cc8a13405a9ebfdc76a4279d52ff3e13dd4f73766b7a1ff6b45aa609fc3"
+  digest = "1:9f35366f9320824eab04f789b106ffe305ad4c44b1c3448631696990086704e5"
   name = "github.com/aws/aws-lambda-go"
   packages = [
     "events",
@@ -12,11 +12,11 @@
     "lambdacontext",
   ]
   pruneopts = "UT"
-  revision = "b5b7267d297de263cc5b61f8c37543daa9c95ffd"
-  version = "v1.13.3"
+  revision = "b03d958110de656174675d8f88049be607e57b0f"
+  version = "v1.14.0"
 
 [[projects]]
-  digest = "1:93c9d8ddd45bdf825bab5645f3cc2819a3a7864ff2eb8bb67d24cd74c468ce51"
+  digest = "1:703b233749ed1b9c74e49d9b1afcba76166ad439577c1334b8db119c44a4cfda"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -47,6 +47,7 @@
     "internal/sdkuri",
     "internal/shareddefaults",
     "internal/strings",
+    "internal/sync/singleflight",
     "private/protocol",
     "private/protocol/eventstream",
     "private/protocol/eventstream/eventstreamapi",
@@ -67,8 +68,8 @@
     "service/sts/stsiface",
   ]
   pruneopts = "UT"
-  revision = "6ddc79ea5d2dd6bdb065c4d840c5759e548920d9"
-  version = "v1.28.13"
+  revision = "e05b942778ce977989d572d8b334af7c2ec0e801"
+  version = "v1.29.2"
 
 [[projects]]
   digest = "1:bb81097a5b62634f3e9fec1014657855610c82d19b9a40c17612e32651e35dca"

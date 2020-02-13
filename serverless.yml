@@ -18,9 +18,9 @@ provider:
   versionFunctions: false
   stage: dev
   region: us-east-1
-#  tracing:
-#    apiGateway: true
-#    lambda: true
+  tracing:
+    apiGateway: true
+    lambda: true
   environment:
     tableName: ${self:custom.tableName}
     bucketName: ${self:custom.bucketName}
